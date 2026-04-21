@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (C) 2017 Lukas Balzer, Asim Abdulkhaleq, Stefan Wagner Institute of SoftwareTechnology, Software Engineering Group University of Stuttgart, Germany.
+  All rights reserved. This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License v1.0
+  which accompanies this distribution, and is available at
+  http://www.eclipse.org/legal/epl-v10.html
+  
+  Contributors:
+     Lukas Balzer- initial API and implementation
+-->
+<xs:schema attributeFormDefault="unqualified"
+	elementFormDefault="unqualified" targetNamespace="userSystem"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:Q1="userSystem"
+	version="2.0.0">
+	<xs:element name="userSystem">
+    	<xs:complexType>
+    		<xs:all>
+    			<xs:element name="adminRegistry" maxOccurs="1"
+    				minOccurs="1">
+    				<xs:complexType>
+    					<xs:sequence>
+    						<xs:element name="admin"
+    							maxOccurs="unbounded" minOccurs="0">
+    							<xs:complexType>
+    								<xs:complexContent>
+    									<xs:extension
+    										base="Q1:AbstractUser">
+    									</xs:extension>
+    								</xs:complexContent>
+    							</xs:complexType>
+    						</xs:element>
+    					</xs:sequence>
+    				</xs:complexType>
+    			</xs:element>
+    			<xs:element name="userRegistry" maxOccurs="1"
+    				minOccurs="1">
+    				<xs:complexType>
+    					<xs:sequence>
+    						<xs:element name="user"
+    							maxOccurs="unbounded" minOccurs="0">
+    							<xs:complexType>
+    								<xs:complexContent>
+    									<xs:extension
+    										base="Q1:AbstractUser">
+    									</xs:extension>
+    								</xs:complexContent>
+    							</xs:complexType>
+    						</xs:element>
+    					</xs:sequence>
+    				</xs:complexType>
+    			</xs:element>
+	            <xs:element
+	                name="responsibilities" maxOccurs="1" minOccurs="0">
+	                <xs:complexType>
+	                    <xs:sequence>
+	                        <xs:element name="responsibility" maxOccurs="unbounded" minOccurs="0">
+	                        <xs:complexType>
+						        <xs:attribute name="userId" type="xs:string"  use="required"></xs:attribute>
+						        <xs:attribute name="entryId" type="xs:string"  use="required"></xs:attribute>
+		                    </xs:complexType>
+	                        </xs:element>
+	                    </xs:sequence>
+	                </xs:complexType>
+	            </xs:element>
+    		</xs:all>
+    		<xs:attribute name="systemId" type="xs:string"></xs:attribute>
+    	</xs:complexType>
+    </xs:element>
+
+
+    <xs:complexType name="AbstractUser">
+    	<xs:attribute name="userId" type="xs:string"  use="required"></xs:attribute>
+    	<xs:attribute name="username" type="xs:string"  use="required"></xs:attribute>
+    	<xs:attribute name="password" type="xs:string"  use="required"></xs:attribute>
+        <xs:attribute name="accessLevel" type="xs:string" use="optional"></xs:attribute>
+        <xs:attribute name="workingProjectId" type="xs:string" use="optional"></xs:attribute>
+    </xs:complexType>
+</xs:schema>

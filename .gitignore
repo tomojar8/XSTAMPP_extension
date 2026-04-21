@@ -1,0 +1,11 @@
+# すべての階層の bin フォルダとその中身を無視
+**/bin/
+bin/
+
+# すべての階層の .class ファイルを無視
+**/*.class
+*.class
+
+# Eclipseの一時ファイルや設定
+**/.metadata/
+**/.recommenders/

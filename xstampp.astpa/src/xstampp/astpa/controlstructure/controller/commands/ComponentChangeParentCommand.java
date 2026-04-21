@@ -1,0 +1,136 @@
+/*******************************************************************************
+ * Copyright (c) 2013, 2017 A-STPA Stupro Team Uni Stuttgart (Lukas Balzer, Adam Grahovac, Jarkko
+ * Heidenwag, Benedikt Markt, Jaqueline Patzek, Sebastian Sieber, Fabian Toth, Patrick
+ * Wickenhäuser, Aliaksei Babkovich, Aleksander Zotov).
+ *
+ * All rights reserved. This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ *******************************************************************************/
+
+package xstampp.astpa.controlstructure.controller.commands;
+
+import java.util.UUID;
+
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
+
+import xstampp.astpa.model.controlstructure.ControlStructureController;
+import xstampp.astpa.model.controlstructure.components.ComponentType;
+import xstampp.astpa.model.controlstructure.interfaces.IRectangleComponent;
+import xstampp.astpa.model.interfaces.IControlStructureEditorDataModel;
+import xstampp.ui.common.ProjectManager;
+
+/**
+ *
+ *
+ *
+ * @author Aliaksei Babkovich, Lukas Balzer
+ * @version 1.0
+ */
+public class ComponentChangeParentCommand extends ControlStructureAbstractCommand {
+  private IRectangleComponent comp;
+  private IRectangleComponent oldParent;
+  private IRectangleComponent newParent;
+
+  private Rectangle oldLayoutStep0;
+  private Rectangle oldLayoutStep2;
+
+  private Rectangle newLayoutStep0;
+  private Rectangle newLayoutStep2;
+  private ControlStructureController controller;
+
+  /**
+   *
+   * @author Lukas Balzer
+   * @param model
+   *          The dataModel which contains all model classes
+   * @param stepID
+   *          the stepEditor ID
+   */
+  public ComponentChangeParentCommand(UUID rootId, IControlStructureEditorDataModel model,
+      String stepID) {
+    super(rootId, model, stepID);
+    this.controller = getDataModel().getControlStructureController();
+  }
+
+  @Override
+  public void execute() {
+    ProjectManager.getLOGGER().debug("changed parent with : " + newLayoutStep0.toString());
+    controller.changeComponentParent(comp.getId(), oldParent.getId(), newParent.getId(),
+        newLayoutStep0, newLayoutStep2);
+  }
+
+  public void setNewLocation(Point p) {
+
+    this.newLayoutStep0 = new Rectangle(p.x(), p.y(), oldLayoutStep0.width, oldLayoutStep0.height);
+    this.newLayoutStep2 = new Rectangle(p.x(), p.y(), oldLayoutStep2.width, oldLayoutStep2.height);
+  }
+
+  @Override
+  public boolean canExecute() {
+    if ((this.oldParent == null) || (this.newParent == null)) {
+      return false;
+    }
+    switch (this.comp.getComponentType()) {
+
+    case PROCESS_VARIABLE:
+      return this.newParent.getComponentType().equals(ComponentType.PROCESS_MODEL);
+    case PROCESS_VALUE:
+      return this.newParent.getComponentType().equals(ComponentType.PROCESS_VARIABLE);
+    case PROCESS_MODEL:
+      return this.newParent.getComponentType().equals(ComponentType.CONTROLLER);
+    case CONTAINER:
+      return false;
+    case CONTROLACTION:
+      return this.newParent.getComponentType().equals(ComponentType.CONTAINER);
+    default:
+      break;
+    }
+
+    switch (this.newParent.getComponentType()) {
+    case PROCESS_VARIABLE:
+      return this.comp.getComponentType().equals(ComponentType.PROCESS_VALUE);
+    case PROCESS_MODEL:
+      return this.comp.getComponentType().equals(ComponentType.PROCESS_VARIABLE);
+    case TEXTFIELD:
+    case PROCESS_VALUE:
+      return false;
+    default:
+      break;
+    }
+    return true;
+  }
+
+  @Override
+  public void undo() {
+    ProjectManager.getLOGGER().debug("changed parent with : " + oldLayoutStep0.toString());
+    controller.changeComponentParent(comp.getId(), newParent.getId(), oldParent.getId(),
+        oldLayoutStep0, oldLayoutStep2);
+  }
+
+  /**
+   * @param compId
+   *          the compId to set
+   */
+  public void setComp(IRectangleComponent comp) {
+    this.comp = comp;
+    this.oldLayoutStep0 = comp.getLayout(true);
+    this.oldLayoutStep2 = comp.getLayout(false);
+    ProjectManager.getLOGGER().debug("create change parent with : " + oldLayoutStep0.toString());
+  }
+
+  public void setOldParent(IRectangleComponent oldParent) {
+    this.oldParent = oldParent;
+  }
+
+  /**
+   * @param newParent
+   *          the newParentId to set
+   */
+  public void setNewParent(IRectangleComponent newParent) {
+    this.newParent = newParent;
+  }
+
+}

@@ -1,26 +1,38 @@
-# --- Java/Eclipse の生成物（ゴミ箱へ！） ---
+# --- Java & Eclipse 関連 (コンパイル後のゴミ) ---
 **/bin/
 **/*.class
 **/.metadata/
 **/.recommenders/
+**/RemoteSystemsTempFiles/
+**/*.log
 
-# --- ビルドツールの生成物 ---
+# --- Maven 関連 (これが913MBの主犯！) ---
 **/target/
-**/build/
-**/.gradle/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
 
-# --- Eclipse のプロジェクト固有設定 ---
-# 1人で開発するならこれらはGitHubに上げておくとPC移行が楽。
-# もしエラーが出るようならコメントアウトを外して無視させる。
-# .settings/
-# .project
-# .classpath
+# --- ライブラリ & バイナリ (Geminiには不要) ---
+**/*.jar
+**/*.zip
+**/*.tar.gz
+**/*.war
+**/*.ear
 
-# --- OSのゴミファイル ---
+# --- OS 固有のゴミファイル ---
 .DS_Store
 Thumbs.db
 desktop.ini
 
-# --- XSTAMPP特有のログや一時ファイル ---
-*.log
-**/logs/
+# --- Eclipse プロジェクト設定 (パス問題を防ぐため) ---
+# 他のPC（Macなど）と共有する際にエラーの元になるため無視を推奨。
+# ただし、設定を維持したい場合は先頭の # を外してください。
+# .settings/
+# .project
+# .classpath

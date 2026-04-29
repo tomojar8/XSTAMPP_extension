@@ -1,11 +1,26 @@
-# すべての階層の bin フォルダとその中身を無視
+# --- Java/Eclipse の生成物（ゴミ箱へ！） ---
 **/bin/
-bin/
-
-# すべての階層の .class ファイルを無視
 **/*.class
-*.class
-
-# Eclipseの一時ファイルや設定
 **/.metadata/
 **/.recommenders/
+
+# --- ビルドツールの生成物 ---
+**/target/
+**/build/
+**/.gradle/
+
+# --- Eclipse のプロジェクト固有設定 ---
+# 1人で開発するならこれらはGitHubに上げておくとPC移行が楽。
+# もしエラーが出るようならコメントアウトを外して無視させる。
+# .settings/
+# .project
+# .classpath
+
+# --- OSのゴミファイル ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- XSTAMPP特有のログや一時ファイル ---
+*.log
+**/logs/
